@@ -8,6 +8,7 @@ local icons
 
 local diagnostics = require('lsp-status/diagnostics')
 local messages = require('lsp-status/messaging').messages
+local util = require('lsp-status/util')
 local aliases = {pyls_ms = 'MPLS'}
 
 local function make_statusline_component(diagnostics_key)
@@ -36,11 +37,12 @@ local function init(_, _config)
 end
 
 local function get_lsp_progress()
+  local buf_clients = util.get_active_clients()
   local buf_messages = messages()
   local msgs = {}
 
   for _, msg in ipairs(buf_messages) do
-    local name = aliases[msg.name] or msg.name
+    local name = aliases[msg.name] or buf_clients[msg.name] or msg.name
     local client_name = '[' .. name .. ']'
     local contents
     if msg.progress then

@@ -81,12 +81,22 @@ local function mk_handler(fn)
   end
 end
 
+local function get_active_clients()
+  local buf_clients = vim.lsp.buf_get_clients()
+  local id_to_name = {}
+  for _, c in pairs(buf_clients) do
+    id_to_name[c.id] = c.name
+  end
+  return id_to_name
+end
+
 local M = {
   extract_symbols = extract_symbols,
   in_range = in_range,
   filter = filter,
   ensure_init = ensure_init,
   mk_handler = mk_handler,
+  get_active_clients = get_active_clients,
 }
 
 return M
